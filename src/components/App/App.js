@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from '../SearchResults/SearchResults';
 import PlayList from "../PlayList/PlayList";
@@ -36,14 +36,16 @@ const TRACKS = [
 function App() {
   const [tracks, setTracks] = useState([]);
   const [playList, setPlayList] = useState([]);
-  const [trackStatus, setTrackStatus] = useState(false);
-
+  // const [trackStatus, setTrackStatus] = useState(false);
+  
   function addToPlayList(track) {
-    setTrackStatus(true);
     if (!playList.some(saved => saved.id === track.id)) {
       setPlayList([...playList, track]);
     }
-    console.log(playList)
+  }
+
+  function deleteFromPlayList(index) {
+    setPlayList(prev => prev.filter((item, i) => i !== index));
   }
 
   return (
@@ -52,7 +54,7 @@ function App() {
 
       <div className={styles.TracksContainer}>
         <SearchResults trackResults={TRACKS} addToPlayList={addToPlayList}/>
-        <PlayList onSetTrackStatus={setTrackStatus} trackStatus={trackStatus} savedTrack={playList} />
+        <PlayList onDelete={deleteFromPlayList} savedPlayList={playList} />
       </div>
 
     </div>

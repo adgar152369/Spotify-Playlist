@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./PlayList.module.css";
 
-export default function PlayList({ savedTrack, trackStatus, onSetTrackStatus }) {
-  const [playList, setPlayList] = useState(savedTrack);
+export default function PlayList({ savedPlayList, onDelete }) {
+  const [playListName, setPlayListName] = useState('');
 
-  function handleDelete(index) {
-    setPlayList(prev => prev.filter((item, i) => console.log(i !== index)));
-    onSetTrackStatus(false);
+  function handleListName({target}) {
+    setPlayListName(target.value);
   }
 
   return (
     <div className={styles.PlayList}>
+      
+      <input type="text" onChange={handleListName} placeholder="Playlist Name" />
 
-      {trackStatus && savedTrack ? savedTrack.map((track, index) => (
+      {savedPlayList ? savedPlayList.map((track, index) => (
         <div key={track.id} className={styles.PlayListTrack}>
           <p>{track.title}</p>
-          <button onClick={() => handleDelete(index)}>Delete</button>
+          <button onClick={() => onDelete(index)}>Delete</button>
         </div>
       )) : <p>No tracks saved</p>}
 

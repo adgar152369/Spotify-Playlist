@@ -1,25 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
-export default function SearchBar({ tracks }) {
-  const [track, setTrack] = useState('');
+import "./SearchBar.css";
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log(track)
-  }
+const SearchBar = ({onSearch}) => {
+  const [term, setTerm] = useState("");
 
-  function handleTrack({ target }) {
-    setTrack(target.value);
-  }
+  const handleTermChange = useCallback((event) => {
+    setTerm(event.target.value);
+  }, []);
+
+  const search = useCallback(() => {
+    onSearch(term);
+  }, [onSearch, term]);
 
   return (
-    <div className="search">
-      <form onSubmit={handleSubmit}>
-        <div className="search-bar">
-          <input type="text" onChange={handleTrack} placeholder="Search for title, artist, or album"/>
-        </div>
-        <button type="submit">Go</button>
-      </form>
+    <div className="SearchBar">
+      <input placeholder="Enter A Song Title" onChange={handleTermChange} />
+      <button className="SearchButton" onClick={search}>
+        SEARCH
+      </button>
     </div>
-  )
-}
+  );
+};
+
+export default SearchBar;

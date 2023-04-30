@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from '../SearchResults/SearchResults';
 import PlayList from "../PlayList/PlayList";
@@ -37,6 +37,10 @@ function App() {
   const [tracks, setTracks] = useState([]);
   const [playList, setPlayList] = useState([]);
   // const [trackStatus, setTrackStatus] = useState(false);
+
+  const searchTrack = useCallback((term) => {
+    Spotify.search(term).then(setTracks);
+  }, []);
   
   function addToPlayList(track) {
     if (!playList.some(saved => saved.id === track.id)) {
@@ -50,10 +54,10 @@ function App() {
 
   return (
     <div className="App">
-      <SearchBar tracks={tracks} />
+      <SearchBar onSearch={searchTrack} />
 
       <div className={styles.TracksContainer}>
-        <SearchResults trackResults={TRACKS} addToPlayList={addToPlayList}/>
+        <SearchResults trackResults={tracks} addToPlayList={addToPlayList}/>
         <PlayList onDelete={deleteFromPlayList} savedPlayList={playList} />
       </div>
 

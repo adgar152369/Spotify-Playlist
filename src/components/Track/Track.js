@@ -4,7 +4,7 @@ export default function Track({ track, addToPlayList }) {
 
   return (
     <div className="track">
-      <h2 className="track-title">{track.title}</h2>
+      <h2 className="track-title">{track.name}</h2>
       <div className="track-information">
         <p className="track-artist">{track.artist}</p>
         <p className="track-album">{track.album}</p>

@@ -36,29 +36,35 @@ const TRACKS = [
 function App() {
   const [tracks, setTracks] = useState([]);
   const [playListTracks, setPlayListTracks] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [playListName, setPlayListName] = useState('New Playlist');
 
   async function searchTrack(term) {
-    setLoading(true)
     const results = await Spotify.search(term);
     if (results.length > 0) {
       setTracks(results);
     }
   }
 
+  // add to user's playlist
   function addToPlayList(track) {
     if (!playListTracks.some(saved => saved.id === track.id)) {
       setPlayListTracks((prevTracks) => [...prevTracks, track]);
     }
   }
 
+  // delete from user's playlist
   function deleteFromPlayList(index) {
     setPlayListTracks(prev => prev.filter((item, i) => i !== index));
   }
 
-  function saveToPlayList(name, trackUriArr) {
-    console.log(playListTracks);
-  }
+  // save playlist to user's spotify account
+  const saveToPlaylist = useCallback(() => {
+    const trackUris = playListTracks.map((track) => track.uri);
+    Spotify.savePlaylist(playListName, trackUris).then(() => {
+      setPlayListName('New Playlist')
+      setPlayListTracks([]);
+    });
+  }, [playListName, playListTracks]);
 
   return (
     <div className="App">
@@ -66,7 +72,11 @@ function App() {
 
       <div className="TracksContainer">
         <SearchResults trackResults={tracks ? tracks : <p>no tracks</p>} addToPlayList={addToPlayList} />
-        <PlayList onDelete={deleteFromPlayList} savedPlayList={playListTracks} />
+        <PlayList
+          onDelete={deleteFromPlayList}
+          savedPlayListTrack={playListTracks}
+          onSavePlayList={saveToPlaylist}
+        />
       </div>
 
     </div>

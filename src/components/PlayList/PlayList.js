@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./PlayList.css";
 
-export default function PlayList({ savedPlayList, onDelete }) {
+export default function PlayList({ savedPlayListTrack, onSavePlayList, onDelete }) {
   const [playListName, setPlayListName] = useState('');
 
   function handleListName({ target }) {
@@ -13,7 +13,7 @@ export default function PlayList({ savedPlayList, onDelete }) {
 
       <input type="text" onChange={handleListName} placeholder="Playlist Name" />
 
-      {savedPlayList ? savedPlayList.map((track, index) => (
+      {savedPlayListTrack ? savedPlayListTrack.map((track, index) => (
         <div key={track.id} className="PlayListTrack">
           <div className="playlist-info">
             <p className="PlayListTrackName">{track.name}</p>
@@ -24,7 +24,7 @@ export default function PlayList({ savedPlayList, onDelete }) {
       )) : <p>No tracks saved</p>}
 
       <div className="PlayListSaveBtn">
-        <button>Save To Spotify</button>
+        <button onClick={onSavePlayList}>Save To Spotify</button>
       </div>
     </div>
   )

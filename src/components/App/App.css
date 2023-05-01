@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+body {
+  background: black;
+  font-family: 'Inter', sans-serif;
+}
+
+.TracksContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4rem;
+}
+
+.loading {
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .TracksContainer {
+    flex-direction: row;
+  }
+}

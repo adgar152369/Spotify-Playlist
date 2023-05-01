@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import SearchBar from "../SearchBar/SearchBar";
 import SearchResults from '../SearchResults/SearchResults';
 import PlayList from "../PlayList/PlayList";
 import Spotify from '../../utils/Spotify';
-import styles from "../App/App.module.css";
+import "../App/App.css";
 
 const TRACKS = [
   {
@@ -35,30 +35,38 @@ const TRACKS = [
 
 function App() {
   const [tracks, setTracks] = useState([]);
-  const [playList, setPlayList] = useState([]);
-  // const [trackStatus, setTrackStatus] = useState(false);
+  const [playListTracks, setPlayListTracks] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const searchTrack = useCallback((term) => {
-    Spotify.search(term).then(setTracks);
-  }, []);
-  
+  async function searchTrack(term) {
+    setLoading(true)
+    const results = await Spotify.search(term);
+    if (results.length > 0) {
+      setTracks(results);
+    }
+  }
+
   function addToPlayList(track) {
-    if (!playList.some(saved => saved.id === track.id)) {
-      setPlayList([...playList, track]);
+    if (!playListTracks.some(saved => saved.id === track.id)) {
+      setPlayListTracks((prevTracks) => [...prevTracks, track]);
     }
   }
 
   function deleteFromPlayList(index) {
-    setPlayList(prev => prev.filter((item, i) => i !== index));
+    setPlayListTracks(prev => prev.filter((item, i) => i !== index));
+  }
+
+  function saveToPlayList(name, trackUriArr) {
+    console.log(playListTracks);
   }
 
   return (
     <div className="App">
       <SearchBar onSearch={searchTrack} />
 
-      <div className={styles.TracksContainer}>
-        <SearchResults trackResults={tracks} addToPlayList={addToPlayList}/>
-        <PlayList onDelete={deleteFromPlayList} savedPlayList={playList} />
+      <div className="TracksContainer">
+        <SearchResults trackResults={tracks ? tracks : <p>no tracks</p>} addToPlayList={addToPlayList} />
+        <PlayList onDelete={deleteFromPlayList} savedPlayList={playListTracks} />
       </div>
 
     </div>

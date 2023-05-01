@@ -1,0 +1,43 @@
+.TrackList {
+  flex: 1;
+  max-width: 350px;
+  padding-left: 0;
+  height: 100%;
+  padding-inline: 10px;
+  color: white;
+  overflow: scroll;
+}
+
+.TrackList input {
+  padding: 5px;
+  font-size: 1.05rem;
+  border: none;
+  background: none;
+  color: white;
+  outline: none;
+  border-bottom: solid 2px lightgrey;
+}
+
+.TrackList button {
+  background: none;
+  border: solid 1px lightblue;
+  color: lightblue;
+  padding: 6px 12px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.TrackList button:hover {
+  background: lightblue;
+  color: #282828;
+}
+
+@media (min-width: 1024px) {
+  .TrackList {
+    min-width: 350px;
+    height: 550px;
+    max-height: 800px;
+    padding-inline: 30px;
+  }
+}
